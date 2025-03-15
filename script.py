@@ -7,10 +7,10 @@ nltk.download('punkt_tab')
 from nltk.corpus import stopwords
 from collections import Counter
 #data importing and data cleaning
-new_articles=pd.read_csv(r'C:\\Users\\tzwrakos\\OneDrive\\Υπολογιστής\\Udemy\\dataset\\news_articles.csv')
+new_articles=pd.read_csv(r'C:\\Users\tzwrakos\\OneDrive\\Υπολογιστής\\Projects\\Fake News Detection Udemy\\dataset\\news_articles.csv')
 new_articles.dropna(axis=0,inplace=True)
 new_articles.drop_duplicates(inplace=True)
-cleaned_dataset=pd.read_csv(r'C:\\Users\\tzwrakos\\OneDrive\\Υπολογιστής\\Udemy\\dataset\\cleaned_dataset.csv')
+cleaned_dataset=pd.read_csv(r'C:\\Users\\tzwrakos\\OneDrive\\Υπολογιστής\\Projects\\Fake News Detection Udemy\\dataset\\cleaned_dataset.csv')
 
 #new source credibility analysis
 source_counts=cleaned_dataset.groupby(["site_url","label"]).size().unstack(fill_value=0)
