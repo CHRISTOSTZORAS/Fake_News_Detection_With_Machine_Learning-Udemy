@@ -7,5 +7,6 @@ tqdm
 joblib
 optuna
 nltk
-
+scipy
+scikit-learn
 
