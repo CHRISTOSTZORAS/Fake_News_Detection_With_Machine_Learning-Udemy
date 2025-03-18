@@ -16,6 +16,8 @@ This repository contains a machine learning pipeline for detecting fake news. It
 - [Fake News Prediction Models Using Random Forest](#random-forest)
 - [Evaluating Fake News Detection Model with confusion Matrix](#confussion-matrix)
 - [Fairness Audit](#fairness-audit)
+- [Installation](#installation)
+- [Contact](#contact)
 
 ---
 
