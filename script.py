@@ -10,16 +10,20 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import LabelEncoder
-
+from fairlearn.metrics import demographic_parity_difference,equalized_odds_difference
+from fairlearn.postprocessing import ThresholdOptimizer
+from fairlearn.reductions import DemographicParity,EqualizedOdds
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('punkt_tab')
 from nltk.corpus import stopwords
 from collections import Counter
+
 ######################### data importing and data cleaning #########################
 
 new_articles=pd.read_csv(r'C:\\Users\tzwrakos\\OneDrive\\Υπολογιστής\\Projects\\Fake News Detection Udemy\\dataset\\news_articles.csv')
@@ -95,7 +99,7 @@ plt.figure(figsize=(10,6))
 colors=['green','red','green','red']
 plt.bar(labels,length,color=colors)
 plt.title('Average Title and Text Lengths for Real and Fake News')
-plt.ytitle('Average Length')
+# plt.ytitle('Average Length')
 plt.xticks(rotation=45)
 plt.show()
 
@@ -243,9 +247,79 @@ prediction=fakenewspredictions(article_input)
 print(f'Prediction: {prediction}')
   
   
+######################### detect fake news with Random Forest #########################
+X=cleaned_dataset['title']
+y=cleaned_dataset['label']
+tfif_vectorizer=TfidfVectorizer(max_features=5000,stop_words='english')
+X_tfidf=tfif_vectorizer.fit_transform(X)
+label_encoder=LabelEncoder()
+y_encoded=label_encoder.fit_transform(y)  
+random_forest_classifiers=RandomForestClassifier(n_estimators=100,random_state=42)
+random_forest_classifiers.fit(X_tfidf,y_encoded)
+def fakenewsprediction(title):
+  title_tdidf=tfif_vectorizer.transform([title])
+  predictions=random_forest_classifiers.predict(title_tdidf)
+  predicted_label=label_encoder.inverse_transform(predictions)
+  return predicted_label[0]
   
-  
-  
-  
-  
-  
+title_input='University announces educatonal programming related to recent geopolitical conflict in the Middle East'
+predictions=fakenewsprediction(title_input)
+print(f'Prediction:{predictions}')
+
+######################### Evaluating Fake News Detection Model with confusion Matrix #########################
+X_evaluation = cleaned_dataset['title']
+y_evaluation = cleaned_dataset['label']
+tfidf_vectorizer_evaluation = TfidfVectorizer(max_features=5000, stop_words='english')
+X_tfidf_evaluation = tfidf_vectorizer_evaluation.fit_transform(X_evaluation)
+label_encoder_evaluation = LabelEncoder()
+y_encoded_evaluation = label_encoder_evaluation.fit_transform(y_evaluation)
+X_train_evaluation, X_test_evaluation, y_train_evaluation, y_test_evaluation = train_test_split(
+    X_tfidf_evaluation, y_encoded_evaluation, test_size=0.2, random_state=42
+)
+random_forest_classifier_evaluation = RandomForestClassifier(n_estimators=100, random_state=42)
+random_forest_classifier_evaluation.fit(X_train_evaluation, y_train_evaluation)
+y_pred_evaluation = random_forest_classifier_evaluation.predict(X_test_evaluation)
+
+cm = confusion_matrix(y_test_evaluation, y_pred_evaluation)
+print("Confusion Matrix:")
+print(cm)
+#if you have true negatives or true positives means that the model predict well
+#plot it for better visualization
+sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", xticklabels=['Real', 'Fake'], yticklabels=['Real', 'Fake'])
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix')
+plt.show()
+
+######################### Performing Fairness Audit #########################
+#1) Diversity of Training Data: Use a diverse and representative dataset for training your model.This helps to reduce bias by ensuring that the model is exposed
+#to a wide range of sources,perspectives, and writing styles.
+#2)Feature Engineering: Carefully engineer features to be less biased.Remove or downweight features that could introduce or amplify bias.For instance,sensitive demographic
+#information should be excluded from features.
+#3)Fairness Audit: Conduct fairness audits on your detection models to identify and rectify any disparities in classification accuracy across different 
+#demographic groups.This ensures that the model's performance is equitable for all users
+X_fairness=cleaned_dataset['title']
+y_fairness=cleaned_dataset['label']
+tfidf_vectorizer_fairness=TfidfVectorizer(max_features=5000,stop_words='english')
+X_tfidf_fairness=tfidf_vectorizer_fairness.fit_transform(X_fairness)
+label_encoder_fairness=LabelEncoder()
+y_encoded_fairness=label_encoder_fairness.fit_transform(y_fairness)
+X_train_fairness,X_test_fairness,y_train_fairness,y_test_fairness=train_test_split(X_tfidf_fairness,y_encoded_fairness,test_size=0.2,random_state=42)
+random_forest_classifier_fairness=RandomForestClassifier(n_estimators=100,random_state=42)
+random_forest_classifier_fairness.fit(X_train_fairness,y_train_fairness)
+y_pred_fairness=random_forest_classifier_fairness.predict(X_test_fairness)
+
+#zero represents fake news
+def demographic_parity_difference(y_true,y_pred_fairness):
+  group1_indices=[i for i,y in enumerate(y_true) if y==0]
+  group2_indices= [i for i,y  in enumerate(y_true) if y==1]
+  group1_positive_rate= sum(1 for i in group1_indices if y_pred_fairness[i]==1)/len(group1_indices)
+  group2_positive_rate= sum(1 for i in group2_indices if y_pred_fairness[i]==1)/len(group2_indices)
+  dp_diff=abs(group1_positive_rate-group2_positive_rate)
+  return dp_diff
+dp_diff=demographic_parity_difference(y_test_fairness,y_pred_fairness)
+print(f'Demographic Parity Difference: {dp_diff}')
+
+#A demographic parity difference of 0.3 indicates a significant disparity in positive predictions between different groups within the dataset
+#A demographic parity difference of 0 means that the positive predictions are distributed equally among different groups.That means tha the model make good predictions
+#closer to 0 the better the model

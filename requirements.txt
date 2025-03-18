@@ -9,4 +9,4 @@ optuna
 nltk
 scipy
 scikit-learn
-
+fairlearn
