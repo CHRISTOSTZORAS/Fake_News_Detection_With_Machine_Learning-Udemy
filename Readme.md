@@ -375,3 +375,6 @@ Contributions are welcome! To contribute:
     --Commit your changes: git commit -m 'Add new feature'
     --Push to the branch: git push origin feature-branch
     --Submit a Pull Request
+
+# 📬 Contact
+Follow me in Linkedin:'https://www.linkedin.com/in/christos-tzoras/'
