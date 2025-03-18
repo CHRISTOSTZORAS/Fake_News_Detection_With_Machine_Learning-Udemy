@@ -1,4 +1,5 @@
-# Fake News Detection with Machine Learning
+# 📰 Fake Article Detection 🧠
+
 
 This repository contains a machine learning pipeline for detecting fake news. It uses various models such as **Random Forest**, **Logistic Regression**, and **Fairlearn** for fairness evaluation. Below are the key steps implemented in the project.
 
@@ -18,7 +19,7 @@ This repository contains a machine learning pipeline for detecting fake news. It
 
 ---
 
-# Introduction
+# 📖 Introduction
 
 This project performs fake news detection using multiple approaches:
 
@@ -31,7 +32,7 @@ This project performs fake news detection using multiple approaches:
 
 ---
 
-# Data Cleaning and Preprocessing
+# 🛠️ Data Cleaning and Preprocessing
 
 ### Data Import and Cleaning
 The dataset consists of articles with titles, text, and labels (Real or Fake).
@@ -46,7 +47,7 @@ new_articles.drop_duplicates(inplace=True)
 ```
 ---
 
-# Keyword Analysis
+# 🛠️ Keyword Analysis
 We perform a **keyword analysis**  to identify the most common words associated with **Fake News**. By analyzing the frequency of words in both the **titles** and **texts** of fake news articles, we can gain insights into the language patterns commonly used in fake news.
 ### Key Steps:
 1. **Data Preprocessing**:
@@ -71,7 +72,7 @@ We perform a **keyword analysis**  to identify the most common words associated 
 
 ---
 
-# Title and Text Length Correlation
+# 🛠️ Title and Text Length Correlation
 We analyze the average lengths of **titles** and **texts** for both **Real** and **Fake News**. This analysis helps identify any significant differences in the structure of news articles that are labeled as fake compared to those that are real.
 
 ### Key Insights:
@@ -94,7 +95,7 @@ We analyze the average lengths of **titles** and **texts** for both **Real** and
 
 ---
 
-# Sensationalism Analysis
+# 🛠️ Sensationalism Analysis
 This project performs an analysis to detect **sensationalism** in news articles. Sensationalist language is often used in fake news to attract attention. We detect this by checking for specific sensationalist keywords in the **text** of the news articles.
 
 ### Key Steps:
@@ -128,7 +129,7 @@ Based on the **Chi-squared test**, with a **p-value** of 0.0735, which is greate
 
 ---
 
-# Emotion Analysis Using NLP
+# 🛠️ Emotion Analysis Using NLP
 This project performs **emotion analysis** on news articles to detect the emotional tone of the content. By using **Sentiment Analysis** with the **VADER SentimentIntensityAnalyzer** from the `nltk` library, we classify the sentiment of the articles as **Positive**, **Negative**, or **Neutral**. 
 
 ### Key Steps:
@@ -161,7 +162,7 @@ Here are some examples of the articles and their corresponding **sentiment label
 
 ---
   
-# Fake News Prediction Models Using Feature Engineering
+# 🛠️ Fake News Prediction Models Using Feature Engineering
 In this project, we perform **Feature Engineering** to identify key features associated with **Fake News** articles. We extract these features based on **word frequencies** and **site URL patterns**, helping improve future machine learning models.
 
 ### Key Features:
@@ -202,7 +203,7 @@ Here are some of the site URLs with the highest number of fake new articles:
 
 ---
 
-# Fake News Prediction Models Using Logistic Regression 
+# 🛠️ Fake News Prediction Models Using Logistic Regression 
 
 This project involves detecting fake news articles using a **Logistic Regression** model. The model is trained to classify news articles as either **Real** or **Fake** based on the content of the articles.
 
@@ -241,7 +242,7 @@ The **Logistic Regression** model was able to classify news articles with an acc
 
 ---
 
-# Fake News Prediction Models Using Random Forest
+# 🛠️ Fake News Prediction Models Using Random Forest
 In this part of the project, we utilize a **Random Forest Classifier** to predict whether a news article is **Fake** or **Real** based on its **title**. The model uses **TF-IDF** (Term Frequency-Inverse Document Frequency) for text feature extraction and **Label Encoding** for the labels.
 
 ### What We Did:
@@ -281,7 +282,7 @@ This prediction indicates that the article with this title is likely to be **Rea
 
 ---
 
-# Evaluating Fake News Detection Model with confusion Matrix
+# 🛠️ Evaluating Fake News Detection Model with confusion Matrix
 In this part of the project, we evaluate the performance of the **Fake News Detection** model using a **Random Forest Classifier**. The model is evaluated by comparing the predicted labels to the actual labels using a **confusion matrix**. This helps to understand how well the model classifies the articles as either **Fake** or **Real**.
 
 ### What We Did:
@@ -317,7 +318,7 @@ The confusion matrix and heatmap show the following key observations:
 - There are also **False Positives (40)**, where **Fake News** articles are incorrectly classified as **Real News**.
 
 ---
-# Fairness Audit
+# 🛠️ Fairness Audit
 In this part of the project, we conduct a **Fairness Audit** to evaluate whether the **Fake News Detection** model performs equitably across different demographic groups. We use **Demographic Parity** as a metric to measure if the model's performance is consistent for all users, regardless of the group they belong to.
 
 ### What We Did:
@@ -346,3 +347,31 @@ This result suggests that there is a **moderate disparity** in the prediction ra
 - The **Demographic Parity Difference** of **0.254** indicates that there is some level of bias in the model, as it favors one group over the other.
 - Further improvements can be made by adjusting the model, engineering more balanced features, and ensuring that the model is exposed to an even more diverse and representative dataset.
 - A **Fairness Audit** is essential to ensure that machine learning models, especially those used in **Fake News Detection**, are fair and equitable for all users.
+
+# 🖥️ Installation
+### 1️⃣ Clone the repository:
+```bash
+git clone https://github.com/your-repo/tzwrakos-chatbox.git
+cd tzwrakos-chatbox
+```
+
+### 2️⃣ (Optional) Create a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows use venv\Scripts\activate
+```
+
+### 3️⃣ Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+cd fake-article-detection
+# 🤝 Contributing
+Contributions are welcome! To contribute:
+
+    --Fork the repository.
+    --Create a new branch: git checkout -b feature-branch
+    --Commit your changes: git commit -m 'Add new feature'
+    --Push to the branch: git push origin feature-branch
+    --Submit a Pull Request
