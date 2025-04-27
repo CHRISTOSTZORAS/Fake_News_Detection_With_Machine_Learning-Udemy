@@ -30,7 +30,7 @@ new_articles=pd.read_csv(r'C:\\Users\tzwrakos\\OneDrive\\Υπολογιστής\
 new_articles.dropna(axis=0,inplace=True)
 new_articles.drop_duplicates(inplace=True)
 cleaned_dataset=pd.read_csv(r'C:\\Users\\tzwrakos\\OneDrive\\Υπολογιστής\\Projects\\Fake News Detection Udemy\\dataset\\cleaned_dataset.csv')
-
+print(cleaned_dataset)
 ######################### new source credibility analysis #########################
 
 source_counts=cleaned_dataset.groupby(["site_url","label"]).size().unstack(fill_value=0)
@@ -234,14 +234,7 @@ else:
   
 #lets test this model
 article_input="""
-Olympiacos has had a rough time with its transfers this year. Willian, Velde, Yaremchuk, who came to make a difference, are not making it. Mouzakitis and
-Kostoulas are making it .
-Unlike the new ones, the old ones are still remembered. Carmo, who came from Porto on loan from Nottingham Forest, is still being sought.
-But he will find it.Horta is in Braga, although he no longer plays. Olympiacos, however, still lacks a reliable winger.And the one who left where he went
-is not playing.
-Daniel Podence has not played a single minute in Al Shabab. An injury in early September took him back. But the reports said he would be out for 3 weeks.
-Podence still hasn't played.Therefore, it is logical and next. The rumors are intense, even if the discussions in the summer left some disagreements.
-These are being overcome. Saudi Arabia has not kept others and others. Some consider it very likely. Pontense will sooner or later return to Greece.
+Kobe Bryant is dead due to helicopter crush@@@@@@
 """
 prediction=fakenewspredictions(article_input)
 print(f'Prediction: {prediction}')
